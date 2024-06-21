@@ -28,3 +28,12 @@ DATA = {
 #     'ингредиент2': количество2,
 #   }
 # }
+def recipe_view(request, recipe_title):
+    multiple_k=int(request.GET.get("servings", 1))
+    ingredients = {}
+    print(recipe_title)
+    for k, v in DATA[recipe_title].items():
+        ingredients[k] = v * multiple_k
+    context = {'recipe': ingredients}
+    return render(request, 'calculator/index.html', context)
+
