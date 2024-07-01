@@ -4,14 +4,16 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from main.serializers import ReviewSerializer, ProductListSerializer, ProductDetailsSerializer
-
+from main.models import Product, Review
 
 @api_view(['GET'])
 def products_list_view(request):
+    product = Product.objects.all()
+    ser = ProductListSerializer(product, many=True)
     """реализуйте получение всех товаров из БД
     реализуйте сериализацию полученных данных
     отдайте отсериализованные данные в Response"""
-    pass
+    return Response(ser.data)
 
 
 class ProductDetailsView(APIView):
@@ -19,7 +21,9 @@ class ProductDetailsView(APIView):
         """реализуйте получение товара по id, если его нет, то выдайте 404
         реализуйте сериализацию полученных данных
         отдайте отсериализованные данные в Response"""
-        pass
+        product = Product.objects.get(id=product_id)
+        ser = ProductDetailsSerializer(product)
+        return Response(ser.data)
 
 
 # доп задание:
